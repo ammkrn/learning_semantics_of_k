@@ -50,6 +50,14 @@ notation `#String` := string
 inductive meta_sort_variable 
 | mk : string → meta_sort_variable
 
+/-
+Lean does allow for this to be defined as a nested inductive type,
+(IE mk : string → list meta_sort → meta_sort), but in the current version
+it gets reduced to a very scary looking regular inductive type that ends up
+not working very well (especially wrt VM evaluation), so for now 
+I'm just defining it as a mutual inductive. 
+-/
+
 mutual inductive meta_sort, meta_sort_list
 with meta_sort : Type
 | mk : string → meta_sort_list → meta_sort
