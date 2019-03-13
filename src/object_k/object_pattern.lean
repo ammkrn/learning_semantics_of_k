@@ -2,7 +2,6 @@ import object_k.object_sort
 import .object_sort
 import .object_var
 import .object_symbol
-import term_lemmas
 
 open nat
 open has_sort

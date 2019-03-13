@@ -52,12 +52,14 @@ with lift_object_sort_list : object_sort_list → meta_sort_list
 instance : has_lift object_sort meta_sort := ⟨ lift_object_sort ⟩ 
 instance : has_lift object_sort_list meta_sort_list := ⟨ lift_object_sort_list ⟩ 
 
--- meta-rep of "Nat" sort as defined in 8.3
--- def meta_Nat : #Sort := #sort "Nat" #nilSortList
 def meta_Nat : meta_sort := ↑Nat
 def meta_List_Nat : meta_sort := ↑List_Nat
 
--- evaluation of lifting process from 8.3 on Nat and List_Nat
+-- evaluation of lifting process from 8.3 on Nat and List_Nat; VM evaluation
+-- will show that they come out to
+-- #sort "Nat" ε
+-- #sort "List" [#sort "Nat" ε]
+-- respectively
 #eval meta_Nat
 #eval meta_List_Nat
 
@@ -72,7 +74,7 @@ def list_meta_rep : #Sort → #Sort
 notation `#'List` := list_meta_rep
 
 -- The axioms which define them intensionally in matching logic would be as follows,
--- so we add these patterns to our thery T.
+-- so we add these patterns to our theory T.
 def nat_constructor_axiom : #Pattern := 
     let s1 := #'Nat,
         s2 := #sort "Nat" #nilSortList
@@ -85,7 +87,7 @@ def list_constructor_axiom {carrier s : #Sort} : #Pattern :=
 
 
 -- axiom schema about definedness of list parameters; for any sort s,
--- if s is defined in the current theory, that implies that the forst List s
+-- if s is defined in the current theory, that implies that the sort List s
 -- is therefore defined.
 def list_axiom_schema {carrier s : #Sort} {L : #SortList}: #Pattern :=
     #∀carrier, "s" : %Sort . 
@@ -95,7 +97,7 @@ def list_axiom_schema {carrier s : #Sort} {L : #SortList}: #Pattern :=
 
 
 -- Generic function to lift object symbol declarations into meta theory
--- based on specification in chapter 8
+-- based on specification in chapter 8. Uses already defined lifts for sort.
 def object_symbol_lift_to_meta : object_symbol → meta_symbol
 | (~symbol ident params args ret) := 
     #symbol (name_fn ident) ↑params ↑args ↑ret

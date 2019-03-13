@@ -1,7 +1,6 @@
 import .meta_sort
 import .meta_var
 import .meta_symbol
-import term_lemmas
 
 open nat
 open has_sort
